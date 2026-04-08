@@ -1,69 +1,51 @@
 import Link from 'next/link'
-import { products } from '../data/products'
 
-const categoryColors = {
-  'Antibiotic':    'bg-red-50 text-red-600',
-  'Gastro':        'bg-yellow-50 text-yellow-700',
-  'Digestive':     'bg-green-50 text-green-700',
-  'Pain Relief':   'bg-orange-50 text-orange-700',
-  'Nutraceutical': 'bg-purple-50 text-purple-700',
-  'Haematinics':   'bg-rose-50 text-rose-700',
-}
-
-export default function FeaturedProducts() {
-  const featured = products.slice(0, 6)
-
+export default function BulkOrderBanner() {
   return (
-    <section className="py-20 bg-soft grid-pattern">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
-          <div className="badge bg-brand-100 text-brand-600 mb-4">Product Range</div>
-          <h2 className="section-title mb-4">Our Pharmaceutical Products</h2>
-          <p className="section-sub text-center">
-            Carefully formulated medicines across 6 therapy areas, trusted by doctors nationwide.
-          </p>
-        </div>
+    <section className="py-16 bg-brand-700 relative overflow-hidden">
+      {/* Decorative circles */}
+      <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-brand-600/40 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-brand-800/40 blur-3xl pointer-events-none" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {featured.map(product => (
-            <div key={product.id} className="card p-6 hover:-translate-y-1 transition-all duration-200 group">
-              <div className="flex items-start justify-between mb-4">
-                <div className={`badge ${categoryColors[product.category] || 'bg-slate-100 text-slate-600'} text-xs`}>
-                  {product.category}
-                </div>
-                <span className={`badge text-xs ${product.badge === 'Rx' ? 'bg-brand-50 text-brand-700' : 'bg-green-50 text-green-700'}`}>
-                  {product.badge}
-                </span>
-              </div>
-
-              <div className="mb-1">
-                <h3 className="font-bold text-brand-800 font-display text-base group-hover:text-brand-600 transition-colors">
-                  {product.name}
-                </h3>
-              </div>
-              <p className="text-xs text-slate-400 mb-3 leading-relaxed line-clamp-2">{product.composition}</p>
-              <p className="text-sm text-slate-500 mb-4 leading-relaxed">{product.description}</p>
-
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                <div>
-                  <div className="text-xs text-slate-400">MRP</div>
-                  <div className="font-bold text-brand-700 font-display text-lg">₹{product.mrp.toFixed(2)}</div>
-                </div>
-                <Link href={`/products#${product.id}`} className="text-xs font-semibold text-brand-500 hover:text-brand-700 flex items-center gap-1 transition-colors">
-                  Details →
-                </Link>
-              </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+          {/* Left */}
+          <div className="text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 bg-brand-500/30 text-blue-200 text-xs font-semibold px-4 py-2 rounded-full mb-4 border border-brand-400/30">
+              🎉 Special Offer
             </div>
-          ))}
-        </div>
+            <h2 className="text-3xl sm:text-4xl font-bold font-display text-white mb-3">
+              Bulk Orders?<br />
+              <span className="text-blue-200">We've Got You Covered.</span>
+            </h2>
+            <p className="text-brand-200 max-w-lg text-base leading-relaxed">
+              Sign up for a bulk order account and enjoy <strong className="text-white">FREE delivery all over India</strong> on every order above ₹5,000. 
+              Best prices for hospitals, clinics, and pharmaceutical distributors.
+            </p>
+          </div>
 
-        <div className="text-center">
-          <Link href="/products" className="btn-primary">
-            View All Products
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
+          {/* Right — stats + CTA */}
+          <div className="w-full lg:w-auto">
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              {[
+                { value: '₹5K+', label: 'Free Delivery', icon: '🚚' },
+                { value: '13+', label: 'Products', icon: '💊' },
+                { value: '48h', label: 'Dispatch', icon: '⚡' },
+              ].map(stat => (
+                <div key={stat.label} className="text-center bg-white/10 rounded-2xl p-4 backdrop-blur-sm border border-white/10">
+                  <div className="text-2xl mb-1">{stat.icon}</div>
+                  <div className="text-white font-bold font-display text-lg">{stat.value}</div>
+                  <div className="text-brand-200 text-xs">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+            <Link href="/bulk-order" className="w-full flex items-center justify-center gap-2 bg-white text-brand-700 font-bold py-4 px-8 rounded-2xl hover:bg-blue-50 transition-colors shadow-xl text-base">
+              Register for Bulk Orders
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

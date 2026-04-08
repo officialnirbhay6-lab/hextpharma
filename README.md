@@ -1,144 +1,71 @@
-# Hext Pharma — Next.js Website
+import Link from 'next/link'
+import { products } from '../data/products'
 
-A complete, modern pharmaceutical website for **Hext Pharma Private Limited**, built with **Next.js 14**, **Tailwind CSS**, and **App Router**.
+const categoryColors = {
+  'Antibiotic':    'bg-red-50 text-red-600',
+  'Gastro':        'bg-yellow-50 text-yellow-700',
+  'Digestive':     'bg-green-50 text-green-700',
+  'Pain Relief':   'bg-orange-50 text-orange-700',
+  'Nutraceutical': 'bg-purple-50 text-purple-700',
+  'Haematinics':   'bg-rose-50 text-rose-700',
+}
 
----
+export default function FeaturedProducts() {
+  const featured = products.slice(0, 6)
 
-## 📁 Folder Structure
+  return (
+    <section className="py-20 bg-soft grid-pattern">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-14">
+          <div className="badge bg-brand-100 text-brand-600 mb-4">Product Range</div>
+          <h2 className="section-title mb-4">Our Pharmaceutical Products</h2>
+          <p className="section-sub text-center">
+            Carefully formulated medicines across 6 therapy areas, trusted by doctors nationwide.
+          </p>
+        </div>
 
-```
-hextpharma/
-├── app/
-│   ├── layout.js              # Root layout + SEO metadata
-│   ├── page.js                # Home page
-│   ├── sitemap.js             # Dynamic XML sitemap
-│   ├── products/
-│   │   ├── layout.js          # Products page metadata
-│   │   └── page.js            # Products page (filterable)
-│   ├── about/
-│   │   └── page.js            # About Us page
-│   ├── contact/
-│   │   └── page.js            # Contact page with form
-│   └── bulk-order/
-│       ├── layout.js          # Bulk order metadata
-│       └── page.js            # Bulk order signup (2-step form)
-├── components/
-│   ├── Navbar.js              # Sticky responsive navbar
-│   ├── Footer.js              # Footer with free delivery banner
-│   ├── Hero.js                # Home hero section
-│   ├── TrustBadges.js         # 6 trust badge icons
-│   ├── Services.js            # Services grid (6 cards)
-│   ├── FeaturedProducts.js    # 6 featured products
-│   ├── BulkOrderBanner.js     # CTA banner for bulk orders
-│   └── DoctorGroups.js        # Products by specialty
-├── data/
-│   └── products.js            # All 13 products + categories + doctor groups
-├── styles/
-│   └── globals.css            # Tailwind + custom CSS
-├── public/
-│   └── robots.txt
-├── package.json
-├── tailwind.config.js
-├── postcss.config.js
-└── next.config.js
-```
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          {featured.map(product => (
+            <div key={product.id} className="card p-6 hover:-translate-y-1 transition-all duration-200 group">
+              <div className="flex items-start justify-between mb-4">
+                <div className={`badge ${categoryColors[product.category] || 'bg-slate-100 text-slate-600'} text-xs`}>
+                  {product.category}
+                </div>
+                <span className={`badge text-xs ${product.badge === 'Rx' ? 'bg-brand-50 text-brand-700' : 'bg-green-50 text-green-700'}`}>
+                  {product.badge}
+                </span>
+              </div>
 
----
+              <div className="mb-1">
+                <h3 className="font-bold text-brand-800 font-display text-base group-hover:text-brand-600 transition-colors">
+                  {product.name}
+                </h3>
+              </div>
+              <p className="text-xs text-slate-400 mb-3 leading-relaxed line-clamp-2">{product.composition}</p>
+              <p className="text-sm text-slate-500 mb-4 leading-relaxed">{product.description}</p>
 
-## 🚀 Getting Started
+              <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                <div>
+                  <div className="text-xs text-slate-400">MRP</div>
+                  <div className="font-bold text-brand-700 font-display text-lg">₹{product.mrp.toFixed(2)}</div>
+                </div>
+                <Link href={`/products#${product.id}`} className="text-xs font-semibold text-brand-500 hover:text-brand-700 flex items-center gap-1 transition-colors">
+                  Details →
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
-
-```bash
-# 1. Install dependencies
-npm install
-
-# 2. Start development server
-npm run dev
-
-# 3. Open in browser
-http://localhost:3000
-```
-
-### Build for Production
-
-```bash
-npm run build
-npm start
-```
-
-### Deploy on Vercel
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-```
-
-Or push to GitHub and connect the repo on [vercel.com](https://vercel.com).
-
----
-
-## 📄 Pages
-
-| Page | Route | Description |
-|------|-------|-------------|
-| Home | `/` | Hero, trust badges, services, featured products, bulk CTA, doctor groups |
-| Products | `/products` | All 13 products with search + filter by category & specialty |
-| About Us | `/about` | Company info, mission, values, leadership |
-| Contact | `/contact` | Contact form + company info |
-| Bulk Order | `/bulk-order` | 2-step signup form for bulk orders |
-
----
-
-## 🎨 Design System
-
-- **Colors**: Brand blue (`#1d4ed8`) + soft blues + white
-- **Fonts**: Sora (headings) + DM Sans (body) via Google Fonts
-- **Framework**: Tailwind CSS
-- **Theme**: Clean, modern medical — white + blue
-
----
-
-## 💊 Products Data
-
-All 13 Hext Pharma products are in `data/products.js`:
-- AGITHRO-250 & 500 (Azithromycin)
-- HESTOCID-S Suspension
-- HESTOZYME Syrup
-- ACIMORE-P & ACIMORE-SP
-- REWDEC-DSR Capsules
-- SUCEN-O Suspension
-- HESTOVIT Tablet, Syrup & Drop
-- FAYRAS-XT Tablet & Suspension
-
----
-
-## 📦 Key Features
-
-- ✅ SEO-ready (metadata, Open Graph, sitemap, robots.txt)
-- ✅ Responsive (mobile + tablet + desktop)
-- ✅ Free delivery banner — ₹5,000+ threshold
-- ✅ Product filter by category & doctor specialty
-- ✅ 2-step bulk order registration form
-- ✅ Contact form with subject selection
-- ✅ Smooth animations & hover states
-- ✅ App Router + server/client components
-
----
-
-## 📞 Contact Details (Hext Pharma)
-
-- **Address**: 27/109/3a, Opp Shankar Gali Main Panday Road, Jwala Nagar, Shahdara, Delhi North East, Delhi – 110032
-- **Phone**: 9065395864 | 9534891576
-- **Email**: hextpharma73@gmail.com
-
----
-
-*Built for Hext Pharma Private Limited · Delhi, India*
+        <div className="text-center">
+          <Link href="/products" className="btn-primary">
+            View All Products
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
